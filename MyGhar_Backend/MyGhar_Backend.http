@@ -1,0 +1,6 @@
+@MyGhar_Backend_HostAddress = http://localhost:5233
+
+GET {{MyGhar_Backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
