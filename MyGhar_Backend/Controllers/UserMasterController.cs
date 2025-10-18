@@ -7,7 +7,7 @@ using MyGhar_Backend.Service;
 
 namespace MyGhar_Backend.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserMasterController : ControllerBase
@@ -24,21 +24,19 @@ namespace MyGhar_Backend.Controllers
             _UserMaster = UserMaster;
         }
 
-        [HttpGet]
-        [Route("GetAll")]
-        public async Task<IResult> GetAll()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                return Results.Ok(await _UserMaster.GetAll());
-
+                var users = await _UserMaster.GetAll();
+                return Ok(users);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return Results.BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
-
-
         }
+
     }
 }
