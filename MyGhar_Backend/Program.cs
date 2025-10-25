@@ -69,6 +69,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var issuer = Environment.GetEnvironmentVariable("Jwt__Issuer")
+             ?? builder.Configuration["Jwt:Issuer"];
+
+builder.WebHost.UseUrls("http://*:8080");
+
 var Provider = builder.Services.BuildServiceProvider();
 var Config= Provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<MyGharLocalDbContext>(item => item.UseSqlServer(Config.GetConnectionString("DefaultConnection")));
