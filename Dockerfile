@@ -1,15 +1,11 @@
-﻿# Build stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-# Copy everything and restore
-COPY *.csproj ./
+COPY MyGhar_Backend/*.csproj ./
 RUN dotnet restore
 
-COPY . ./
+COPY MyGhar_Backend/. ./
 RUN dotnet publish -c Release -o /app
 
-# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
