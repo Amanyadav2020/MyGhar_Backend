@@ -1,22 +1,16 @@
-﻿# Use the official .NET 8 SDK image to build the project
+﻿# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-# Copy project file and restore dependencies
-COPY *.csproj ./
+COPY MyGhar_Backend/MyGhar_Backend/*.csproj ./
 RUN dotnet restore
 
-# Copy all files and build the app
-COPY . ./
-RUN dotnet publish -c Release -o /app/publish
+COPY MyGhar_Backend/MyGhar_Backend/. ./
+RUN dotnet publish -c Release -o /app
 
-# Build runtime image (lighter version)
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/publish .
-
-# Render uses port 8080 by default
-EXPOSE 8080
-
-# Start your Web API
+COPY --from=build /app .
+EXPOSE 80
 ENTRYPOINT ["dotnet", "MyGhar_Backend.dll"]
+
