@@ -1,10 +1,12 @@
 ﻿# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY MyGhar_Backend/MyGhar_Backend/*.csproj ./
+
+# Copy everything and restore
+COPY *.csproj ./
 RUN dotnet restore
 
-COPY MyGhar_Backend/MyGhar_Backend/. ./
+COPY . ./
 RUN dotnet publish -c Release -o /app
 
 # Runtime stage
@@ -13,4 +15,3 @@ WORKDIR /app
 COPY --from=build /app .
 EXPOSE 80
 ENTRYPOINT ["dotnet", "MyGhar_Backend.dll"]
-
